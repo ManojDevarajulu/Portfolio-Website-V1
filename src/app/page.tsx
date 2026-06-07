@@ -153,8 +153,7 @@ export default function Home() {
           <li>
             <a
               href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              download="Manoj_Resume.pdf"
               className="font-mono text-[11px] text-mono border border-mono/30 px-3 py-1.5 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider"
             >
               Resume
@@ -189,8 +188,7 @@ export default function Home() {
         ))}
         <a
           href="/resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
+          download="Manoj_Resume.pdf"
           onClick={() => setMenuOpen(false)}
           className="text-xl font-mono text-mono border border-mono/30 px-6 py-2 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider mt-4"
         >
@@ -300,8 +298,7 @@ export default function Home() {
               </a>
               <a
                 href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
+                download="Manoj_Resume.pdf"
                 className="font-mono text-[12px] text-mono border border-mono/30 px-5 py-3 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider flex items-center gap-1.5"
               >
                 Resume <span>↓</span>
