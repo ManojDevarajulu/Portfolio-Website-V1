@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Mono, Playfair_Display } from "next/font/google";
-import "./globals.css";
+import "./globals.css"
+import { Analytics } from "@vercel/analytics/next";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -60,7 +61,7 @@ export default function RootLayout({
       className={`${dmSans.variable} ${dmMono.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans">
-        {children}
+        {children}<Analytics/>
       </body>
     </html>
   );
