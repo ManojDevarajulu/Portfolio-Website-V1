@@ -1,6 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import ReactGA from "react-ga4";
+
+// Initialize GA4 with your Measurement ID
+if (typeof window !== "undefined") {
+  ReactGA.initialize("G-H8RF0XHJZV");
+  // Send the initial pageview
+  ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+}
 import dynamic from "next/dynamic";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
