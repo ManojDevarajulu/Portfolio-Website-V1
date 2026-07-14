@@ -13,6 +13,8 @@ export interface ProjectData {
   link: string;
   type: string;
   isFeatured?: boolean;
+  inProgress?: boolean;
+  mediumLink?: string;
   canvasId: string;
 }
 
@@ -61,7 +63,7 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
           });
         }
       }
-      c.strokeStyle = "rgba(107,143,113,0.08)";
+      c.strokeStyle = "rgba(16,185,129,0.08)";
       c.lineWidth = 0.6;
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
@@ -74,13 +76,13 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
       }
       const cx = w * 0.55, cy = h * 0.45, r = 30 + 5 * Math.sin(f * 0.03);
       const gr = c.createRadialGradient(cx, cy, 0, cx, cy, r * 3);
-      gr.addColorStop(0, "rgba(107,143,113,0.12)");
+      gr.addColorStop(0, "rgba(16,185,129,0.12)");
       gr.addColorStop(1, "transparent");
       c.globalAlpha = 1; c.fillStyle = gr; c.beginPath(); c.arc(cx, cy, r * 3, 0, Math.PI * 2); c.fill();
       nodes.forEach((n, i) => {
         const highlighted = Math.sqrt((n.x - cx) ** 2 + (n.y - cy) ** 2) < 80;
         c.globalAlpha = highlighted ? 0.5 + 0.2 * Math.sin(f * 0.05 + i) : 0.1 + n.a;
-        c.fillStyle = highlighted ? "#6b8f71" : "#c8c4b8";
+        c.fillStyle = highlighted ? "#10b981" : "#c8c4b8";
         c.beginPath(); c.arc(n.x, n.y, highlighted ? 2.5 : 1.2, 0, Math.PI * 2); c.fill();
       });
       c.globalAlpha = 1;
@@ -103,23 +105,23 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
         c.fillRect(40 + lineW + 30, y - 1, lineW * 0.6, 1.5);
         const beam = ((f * 1.2 + i * 5) % (w + 60)) - 30;
         const beamAlpha = Math.max(0, 0.6 - Math.abs(beam - progress) / 60) * 0.35;
-        c.fillStyle = `rgba(107,143,113,${beamAlpha})`;
+        c.fillStyle = `rgba(16,185,129,${beamAlpha})`;
         c.fillRect(beam, y - 6, 3, 12);
       }
       const scanY = (f * 0.8) % h;
       const sGrad = c.createLinearGradient(0, scanY - 4, 0, scanY + 4);
       sGrad.addColorStop(0, "transparent");
-      sGrad.addColorStop(0.5, "rgba(107,143,113,0.2)");
+      sGrad.addColorStop(0.5, "rgba(16,185,129,0.2)");
       sGrad.addColorStop(1, "transparent");
       c.fillStyle = sGrad; c.fillRect(0, scanY - 4, w, 8);
       const labels = ["PHI", "DOC", "REF", "OCR"];
       labels.forEach((l, i) => {
         const lx = w - 80, ly = 30 + i * 40;
         const pulse = 0.3 + 0.2 * Math.sin(f * 0.04 + i * 1.1);
-        c.globalAlpha = pulse; c.strokeStyle = "#6b8f71"; c.lineWidth = 0.8;
+        c.globalAlpha = pulse; c.strokeStyle = "#10b981"; c.lineWidth = 0.8;
         c.strokeRect(lx, ly, 56, 18);
-        c.fillStyle = "rgba(107,143,113,0.08)"; c.fillRect(lx, ly, 56, 18);
-        c.fillStyle = "#6b8f71"; c.font = "9px DM Mono,monospace"; c.textAlign = "center";
+        c.fillStyle = "rgba(16,185,129,0.08)"; c.fillRect(lx, ly, 56, 18);
+        c.fillStyle = "#10b981"; c.font = "9px DM Mono,monospace"; c.textAlign = "center";
         c.fillText(l, lx + 28, ly + 12);
       });
       c.globalAlpha = 1;
@@ -136,7 +138,7 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
       for (let r = 0; r < 3; r++) {
         const pr = radius * 0.3 + radius * 0.7 * ((f * 0.012 + r * 0.33) % 1);
         const pa = 0.15 * (1 - pr / radius);
-        c.globalAlpha = Math.max(0, pa); c.strokeStyle = "rgba(107,143,113,0.4)"; c.lineWidth = 0.6;
+        c.globalAlpha = Math.max(0, pa); c.strokeStyle = "rgba(16,185,129,0.4)"; c.lineWidth = 0.6;
         c.beginPath(); c.arc(cx, cy, pr, 0, Math.PI * 2); c.stroke();
       }
       for (let i = 0; i < numCit; i++) {
@@ -146,16 +148,16 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
         c.globalAlpha = 0.07; c.strokeStyle = "#c8c4b8"; c.lineWidth = 0.5;
         c.beginPath(); c.moveTo(cx, cy); c.lineTo(nx, ny); c.stroke();
         const px = cx + (nx - cx) * lineProgress, py = cy + (ny - cy) * lineProgress;
-        c.globalAlpha = 0.5 * (1 - Math.abs(lineProgress - 0.5) * 2); c.fillStyle = "#6b8f71";
+        c.globalAlpha = 0.5 * (1 - Math.abs(lineProgress - 0.5) * 2); c.fillStyle = "#10b981";
         c.beginPath(); c.arc(px, py, 1.5, 0, Math.PI * 2); c.fill();
         c.globalAlpha = 0.2 + 0.08 * Math.sin(f * 0.04 + i); c.fillStyle = "#c8c4b8";
         c.beginPath(); c.arc(nx, ny, 2, 0, Math.PI * 2); c.fill();
       }
       const ar = 8 + 2 * Math.sin(f * 0.05);
       const ag = c.createRadialGradient(cx, cy, 0, cx, cy, ar * 2);
-      ag.addColorStop(0, "rgba(107,143,113,0.5)"); ag.addColorStop(1, "transparent");
+      ag.addColorStop(0, "rgba(16,185,129,0.5)"); ag.addColorStop(1, "transparent");
       c.globalAlpha = 1; c.fillStyle = ag; c.beginPath(); c.arc(cx, cy, ar * 2, 0, Math.PI * 2); c.fill();
-      c.fillStyle = "rgba(107,143,113,0.8)"; c.beginPath(); c.arc(cx, cy, ar * 0.6, 0, Math.PI * 2); c.fill();
+      c.fillStyle = "rgba(16,185,129,0.8)"; c.beginPath(); c.arc(cx, cy, ar * 0.6, 0, Math.PI * 2); c.fill();
       c.globalAlpha = 1;
     };
 
@@ -174,7 +176,7 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
           c.fillStyle = "#c8c4b8"; c.fillRect(ox + i * sq, oy + j * sq, sq, sq);
         }
       }
-      const territories = [{ x: 2, y: 1, color: "rgba(107,143,113", a: 0.15 }, { x: 5, y: 5, color: "rgba(200,100,60", a: 0.1 }, { x: 1, y: 5, color: "rgba(107,143,113", a: 0.1 }];
+      const territories = [{ x: 2, y: 1, color: "rgba(16,185,129", a: 0.15 }, { x: 5, y: 5, color: "rgba(200,100,60", a: 0.1 }, { x: 1, y: 5, color: "rgba(16,185,129", a: 0.15 }];
       territories.forEach(t => {
         const tx = ox + t.x * sq + sq / 2, ty = oy + t.y * sq + sq / 2, tr = sq * 1.4 + sq * 0.3 * Math.sin(f * 0.04);
         const tg = c.createRadialGradient(tx, ty, 0, tx, ty, tr);
@@ -196,7 +198,7 @@ export function ProjectCanvas({ canvasId }: { canvasId: string }) {
         c.beginPath(); c.arc(px, py, sq * 0.12, 0, Math.PI * 2); c.fill();
       });
       const pinX = ox + 4 * sq + sq / 2, pinY = oy + 6 * sq + sq / 2;
-      c.globalAlpha = 0.6 + 0.2 * Math.sin(f * 0.08); c.fillStyle = "#6b8f71";
+      c.globalAlpha = 0.6 + 0.2 * Math.sin(f * 0.08); c.fillStyle = "#10b981";
       c.beginPath(); c.arc(pinX, pinY - 2, 4, 0, Math.PI * 2); c.fill();
       c.beginPath(); c.moveTo(pinX - 4, pinY - 2); c.lineTo(pinX, pinY+6); c.lineTo(pinX+4, pinY - 2); c.closePath(); c.fill();
       c.globalAlpha = 1;
@@ -242,6 +244,11 @@ export default function ProjectCard({ project, onPreview }: ProjectCardProps) {
             Featured
           </span>
         )}
+        {project.inProgress && (
+          <span className="absolute top-5 left-8 z-2 font-mono text-[9px] tracking-[0.18em] uppercase border border-amber-500/40 bg-amber-500/10 text-amber-400 px-3 py-1">
+            In Progress
+          </span>
+        )}
 
         <span
           className="proj-hero-num font-mono text-7xl md:text-8xl font-light text-transparent select-none relative z-2 tracking-tighter"
@@ -265,9 +272,9 @@ export default function ProjectCard({ project, onPreview }: ProjectCardProps) {
               {project.desc}
             </p>
             <div className="proj-tags flex flex-wrap gap-2 mb-4">
-              {project.tags.map((t, idx) => (
+              {project.tags.map((t) => (
                 <span
-                  key={idx}
+                  key={t}
                   className="tag font-mono text-[10px] font-light text-text-custom3 border border-border-custom px-3 py-1 uppercase tracking-wider group-hover:text-text-custom2 group-hover:border-border-custom2 transition-all duration-300"
                 >
                   {t}
@@ -281,29 +288,46 @@ export default function ProjectCard({ project, onPreview }: ProjectCardProps) {
           </div>
         </div>
 
-        {/* Hover buttons */}
-        <div className="flex md:flex-col gap-4 self-end md:self-start md:mt-2">
-          {/* Live Preview Button */}
-          {project.link !== "#" && (
-            <button
-              onClick={() => onPreview(project.link, project.title)}
-              className="flex items-center justify-center p-3 rounded-full border border-border-custom bg-bg hover:bg-bg2 hover:border-mono text-text-custom2 hover:text-mono transition-all duration-300 group/btn"
-              title="Interactive Live Preview"
-            >
-              <Monitor size={18} className="transition-transform duration-300 group-hover/btn:scale-110" />
-            </button>
+        {/* Actions block */}
+        <div className="flex flex-col gap-3 self-end md:self-start md:mt-2 text-right">
+          {project.inProgress ? (
+            <div className="flex flex-col items-end gap-2">
+              <span className="font-mono text-[9px] text-amber-500/80 uppercase tracking-widest border border-amber-500/30 px-2.5 py-0.5 rounded-sm bg-amber-500/5 select-none">
+                In Progress
+              </span>
+              {project.mediumLink && (
+                <a
+                  href={project.mediumLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-[11px] text-mono hover:text-text-custom border-b border-mono hover:border-text-custom transition-all duration-200 mt-1 pb-0.5"
+                >
+                  [ Read Article on Medium ↗ ]
+                </a>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-end gap-2.5">
+              {project.link && project.link !== "#" && (
+                <>
+                  <button
+                    onClick={() => onPreview(project.link, project.title)}
+                    className="font-mono text-[11px] text-mono hover:text-text-custom border-b border-mono hover:border-text-custom transition-all duration-200 cursor-pointer pb-0.5"
+                  >
+                    [ Interactive Preview ↗ ]
+                  </button>
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[11px] text-text-custom2 hover:text-text-custom border-b border-border-custom hover:border-text-custom transition-all duration-200 pb-0.5"
+                  >
+                    [ Open Direct Link ↗ ]
+                  </a>
+                </>
+              )}
+            </div>
           )}
-
-          {/* Direct Link Arrow Button */}
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="proj-arrow flex items-center justify-center p-3 rounded-full border border-border-custom bg-bg hover:bg-bg2 hover:border-text-custom text-text-custom2 hover:text-text-custom transition-all duration-300"
-            title="Open Site in New Tab"
-          >
-            <ArrowUpRight size={18} />
-          </a>
         </div>
       </div>
     </motion.div>

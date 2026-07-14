@@ -19,50 +19,52 @@ import SkillCard from "@/components/SkillCard";
 import ProjectCard, { ProjectData } from "@/components/ProjectCard";
 import PreviewModal from "@/components/PreviewModal";
 
-// Cursor and RoleCycler are client-only — dynamic import with ssr:false avoids any hydration tree mismatch
-const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
+// RoleCycler is client-only — dynamic import with ssr:false avoids any hydration tree mismatch
 const RoleCycler = dynamic(() => import("@/components/RoleCycler"), { ssr: false });
 
 const projects: ProjectData[] = [
   {
     num: "01",
-    title: "Sentinel — Developer Infrastructure Platform",
-    desc: "A developer infrastructure SaaS designed to improve codebase comprehension. It maps architectures, visualizes dependencies, and calculates the blast radius of code changes to help developers navigate complex systems.",
-    tags: ["Next.js", "FastAPI", "Supabase", "AI Orchestration"],
-    outcome: "Improves developer cognition and codebase visibility",
-    link: "https://sentinel-teal-two.vercel.app/",
-    type: "Dev Infrastructure",
+    title: "GravLens-MMA — AI Gravitational-Wave Follow-up Pipeline",
+    desc: "Building an AI-powered ranking pipeline for gravitational-wave telescope follow-up using Python, PostgreSQL, Astropy, HEALPix, and the GLADE+ catalog. Focuses on scalable data ingestion, feature engineering, and graph-based machine learning ranked by Hit Rate@K and MRR.",
+    tags: ["Python", "Astropy", "HEALPix", "PostgreSQL", "Graph ML"],
+    outcome: "Helps telescopes decide where to look — ranking the galaxy most likely to host a gravitational wave source",
+    link: "",
+    type: "Astro AI Research",
     isFeatured: true,
+    inProgress: true,
+    mediumLink: "https://medium.com/@ManojDevarajulu/why-im-building-an-ai-to-decide-where-telescopes-should-look-2521890ee7fc",
     canvasId: "pc1",
   },
   {
     num: "02",
     title: "Zen AI — Healthcare Automation Platform",
-    desc: "An enterprise healthcare automation platform designed to process referral documents using OCR and large language models. Built for high reliability, scalability, and secure, HIPAA-compliant data handling.",
+    desc: "A production OCR + LLM platform that automates healthcare referral document processing. Reduces processing time by ~90% and saves ~400 hours/month. Built with HIPAA-compliant PHI classification, Azure blob storage, and structured prompt-engineering pipelines.",
     tags: ["GPT-4o", "Tesseract OCR", "FastAPI", "Azure"],
-    outcome: "Processes complex medical referral documents with LLM and OCR pipelines",
+    outcome: "~90% reduction in processing time · ~400 hrs/month saved",
     link: "https://zenai-fax-referral-extractor.onrender.com/",
     type: "Healthcare AI",
     canvasId: "pc2",
   },
   {
     num: "03",
-    title: "YourRIGHT/Urimai — Civic Escalation Platform",
-    desc: "A civic responsibility and escalation platform designed to improve transparent communication between citizens and authorities through secure grievance reporting and escalation workflows.",
-    tags: ["Coordination Systems", "Public Infrastructure", "Civic Tech"],
-    outcome: "Bridge communication and streamline civic issue escalation",
-    link: "https://your-rights.vercel.app/",
-    type: "Civic Infrastructure",
+    title: "Sentinel — Developer Intelligence Copilot",
+    desc: "A developer copilot that combines dependency graph analysis with Retrieval-Augmented Generation (RAG) to enable natural-language code search. Maps architectures, visualizes module dependencies, and helps developers navigate large codebases conversationally.",
+    tags: ["Next.js", "FastAPI", "RAG", "Dependency Graphs"],
+    outcome: "Improves developer cognition and codebase navigability",
+    link: "https://sentinel-teal-two.vercel.app/",
+    type: "Dev Infrastructure",
     canvasId: "pc3",
   },
   {
     num: "04",
     title: "En Passant — Territory Chess Ecosystem",
-    desc: "A territory-based chess ecosystem combining competitive chess strategy, geolocation, real-time multiplayer interactions, and persistent world mechanics.",
-    tags: ["Game Systems", "Geolocation", "Multiplayer", "Real-time"],
+    desc: "A territory-based chess ecosystem combining competitive chess strategy, geolocation, real-time multiplayer interactions, and persistent world mechanics. Python chess engine with full rule enforcement and Minimax AI using alpha-beta pruning.",
+    tags: ["Python", "Game Systems", "Minimax AI", "Multiplayer"],
     outcome: "Competitive chess strategy mapped to real-world geolocation",
-    link: "https://github.com/ManojDevarajulu",
+    link: "",
     type: "Game Ecosystem",
+    inProgress: true,
     canvasId: "pc4",
   },
 ];
@@ -126,8 +128,6 @@ export default function Home() {
         style={{ scaleX }}
       />
 
-      {/* ── Custom Cursor — loaded client-only via dynamic import, no SSR tree diff ── */}
-      <CustomCursor />
 
       {/* ── Header / Navigation ── */}
       <nav
@@ -148,7 +148,7 @@ export default function Home() {
 
         {/* Desktop Links */}
         <ul className="hidden md:flex gap-10 list-none items-center">
-          {["work", "about", "experience", "stack", "contact"].map((section) => (
+          {(["work", "about", "experience", "stack", "contact"] as const).map((section) => (
             <li key={section}>
               <a
                 href={`#${section}`}
@@ -158,15 +158,19 @@ export default function Home() {
               </a>
             </li>
           ))}
-          <li>
-            <a
-              href="/resume.pdf"
-              download="Manoj_Resume.pdf"
-              className="font-mono text-[11px] text-mono border border-mono/30 px-3 py-1.5 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider"
-            >
-              Resume
-            </a>
-          </li>
+          {[
+            { label: "Resume", href: "/Manoj_Resume.docx", download: "Manoj_Resume.docx" }
+          ].map((item) => (
+            <li key={item.label}>
+              <a
+                href={item.href}
+                download={item.download}
+                className="font-mono text-[11px] text-mono border border-mono/30 px-3 py-1.5 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
         </ul>
 
         {/* Mobile Hamburger Button */}
@@ -195,8 +199,8 @@ export default function Home() {
           </a>
         ))}
         <a
-          href="/resume.pdf"
-          download="Manoj_Resume.pdf"
+          href="/Manoj_Resume.docx"
+          download="Manoj_Resume.docx"
           onClick={() => setMenuOpen(false)}
           className="text-xl font-mono text-mono border border-mono/30 px-6 py-2 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider mt-4"
         >
@@ -210,7 +214,7 @@ export default function Home() {
         ══════════════════════════════════════════ */}
         <section
           id="home"
-          className="hero min-h-screen flex flex-col justify-center px-6 md:px-12 pb-20 relative overflow-hidden pt-36 md:pt-40"
+          className="hero min-h-[100dvh] flex flex-col justify-center px-6 md:px-12 pt-24 pb-16 md:pt-28 md:pb-20 relative overflow-hidden"
         >
           <HeroCanvas />
           <div className="hero-gradient absolute inset-0 z-1 pointer-events-none bg-[radial-gradient(ellipse_70%_60%_at_88%_4%,rgba(52,52,52,0.4)_0%,transparent_60%),radial-gradient(ellipse_55%_50%_at_4%_96%,rgba(107,143,113,0.09)_0%,transparent_55%),radial-gradient(ellipse_40%_40%_at_50%_50%,rgba(10,10,10,0.55)_0%,transparent_100%)]" />
@@ -230,8 +234,8 @@ export default function Home() {
             MANOJ
           </div>
 
-          {/* Column structure with layout adjustments to avoid sitting too high */}
-          <div className="max-w-4xl relative z-10 flex flex-col gap-4 md:gap-5 mt-12 md:mt-16">
+          {/* Column structure — vertically centred, no manual top offset */}
+          <div className="max-w-4xl relative z-10 flex flex-col gap-4 md:gap-5">
             {/* Bold identity name — visual anchor of the hero */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -241,7 +245,7 @@ export default function Home() {
             >
               <span
                 style={{
-                  fontSize: "clamp(52px, 9vw, 130px)",
+                  fontSize: "clamp(42px, 7.5vw, 105px)",
                   fontWeight: 800,
                   color: "#e8e6e0",
                   letterSpacing: "-0.02em",
@@ -253,7 +257,7 @@ export default function Home() {
               </span>
               <span
                 style={{
-                  fontSize: "clamp(52px, 9vw, 130px)",
+                  fontSize: "clamp(42px, 7.5vw, 105px)",
                   fontWeight: 800,
                   letterSpacing: "-0.02em",
                   lineHeight: 1,
@@ -305,8 +309,8 @@ export default function Home() {
                 View Work
               </a>
               <a
-                href="/resume.pdf"
-                download="Manoj_Resume.pdf"
+                href="/Manoj_Resume.docx"
+                download="Manoj_Resume.docx"
                 className="font-mono text-[12px] text-mono border border-mono/30 px-5 py-3 hover:bg-mono hover:text-bg transition-all duration-300 uppercase tracking-wider flex items-center gap-1.5"
               >
                 Resume <span>↓</span>
@@ -346,11 +350,10 @@ export default function Home() {
           <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] gap-10">
             {[...marqueeItems, ...marqueeItems].map((item, idx) => (
               <span
-                key={idx}
+                key={`${item}-${idx}`}
                 className="marquee-item font-mono text-[12px] text-text-custom3 tracking-widest uppercase flex items-center gap-10"
               >
-                {item}
-                <span className="text-mono text-base font-normal">·</span>
+                {item}&nbsp;<span aria-hidden="true" className="text-mono text-base font-normal">·</span>
               </span>
             ))}
           </div>
@@ -373,17 +376,17 @@ export default function Home() {
               </h2>
               <div className="about-body text-text-custom2 text-[15px] leading-relaxed flex flex-col gap-5">
                 <p>
-                  Hi, I&apos;m Manoj D — an AI Engineer building developer tools, workflows, and system infrastructure. I naturally think in systems rather than isolated features, focusing on reducing complexity, orchestrating workflows, and building tools that improve visibility and human decision-making.
+                  Hi, I&apos;m Manoj D — an AI/ML Engineer with 1.5+ years building production AI applications, LLM-powered automation, agentic workflows, and RAG systems. I think in systems rather than isolated features, always focused on reducing complexity and delivering measurable impact.
                 </p>
                 <p>
-                  Professionally, I work as an Associate Software Engineer designing production AI systems for healthcare. I build secure, HIPAA-compliant OCR and LLM-powered pipelines, enterprise Azure architectures, and workflow automation. From building Zen AI, I&apos;ve learned that reliability and deployment infrastructure matter just as much as the models themselves.
+                  At Infinite Computer Solutions, I architected Zen AI — a production OCR + LLM platform for healthcare document processing that cut processing time by ~90% and saved ~400 hours/month. I design HIPAA-compliant PHI pipelines, Azure-based cloud architectures, and structured prompt-engineering workflows.
                 </p>
                 <p>
-                  Outside of enterprise systems, I build in public to solve real-world bottlenecks. My current focus is developing Sentinel (a developer infrastructure SaaS for codebase comprehension), YourRIGHT/Urimai (a civic transparent escalation platform), and En Passant (a territory-based geolocation chess game).
+                  On the side, I&apos;m building GravLens-MMA, an AI pipeline that ranks galaxies for gravitational-wave telescope follow-up — and documenting the process on Medium. I also built Sentinel (RAG + dependency graph developer copilot) and an agentic chess engine with Minimax AI.
                 </p>
               </div>
               <div className="stack-row flex flex-wrap gap-2 mt-4">
-                {["Python", "FastAPI", "Next.js", "LangChain", "GPT-4o", "Azure", "Supabase", "Tesseract"].map((chip) => (
+                {["Python", "FastAPI", "LangGraph", "RAG", "GPT-4o", "Azure", "PostgreSQL", "Astropy"].map((chip) => (
                   <span
                     key={chip}
                     className="stack-chip font-mono text-[10px] text-text-custom3 border border-border-custom px-3 py-1 tracking-wider uppercase hover:text-text-custom2 hover:border-border-custom2 transition-colors duration-300"
@@ -407,11 +410,11 @@ export default function Home() {
               {/* Statistics */}
               <div className="grid grid-cols-1 gap-6">
                 {[
-                  { num: "2+", label: "Years in production AI systems" },
-                  { num: "4", label: "Projects shipped across AI & infrastructure" },
+                  { num: "1.5+", label: "Years in production AI systems" },
+                  { num: "~90%", label: "Processing time reduced at Zen AI" },
                   { num: "∞", label: "Systems still left to build" },
-                ].map((stat, idx) => (
-                  <div key={idx} className="about-stat border-t border-border-custom pt-6 flex flex-col gap-1">
+                ].map((stat) => (
+                  <div key={stat.label} className="about-stat border-t border-border-custom pt-6 flex flex-col gap-1">
                     <div className="stat-number text-4xl md:text-5xl font-light text-text-custom tracking-tight leading-none">
                       {stat.num}
                     </div>
@@ -476,28 +479,31 @@ export default function Home() {
               {[
                 {
                   role: "Associate Software Engineer",
-                  period: "2023 — Present",
+                  period: "Oct 2024 — Present",
                   company: "Infinite Computer Solutions",
-                  desc: "Enterprise healthcare AI systems — OCR pipelines, LLM-powered workflows, secure PHI handling, Azure-based architectures, CI/CD, and production AI deployment across regulated environments.",
+                  desc: "Enterprise healthcare AI systems — architected Zen AI, a production OCR + LLM platform that automates referral document processing.",
+                  stats: [
+                    { value: "~90%", label: "Time Saved" },
+                    { value: "~400 hrs", label: "Saved / month" }
+                  ],
                   bullets: [
-                    "Built and deployed OCR + LLM pipelines for referral document automation",
-                    "HIPAA-compliant PHI classification at production scale",
-                    "Azure-based cloud infrastructure, CI/CD, and observability",
+                    "Built OCR + LLM pipelines delivering precise, HIPAA-compliant document processing",
+                    "Implemented secure PHI classification, ingestion and structured JSON delivery",
+                    "Azure Blob Storage, Azure Data Factory migration, and custom Selenium test automation",
                   ],
                 },
                 {
-                  role: "Builder in Public",
-                  period: "Ongoing",
-                  company: "Independent",
-                  desc: "Building AI systems, developer tools, and startup ideas. Documenting the process, sharing systems thinking, and exploring how AI will reshape software engineering over the next decade.",
+                  role: "Full-Stack Developer Intern",
+                  period: "Jul 2024 — Sep 2024",
+                  company: "Inblue Infotech Pvt Ltd",
+                  desc: "Built full-stack product features across the React + Node.js stack. Contributed to REST API design, MongoDB schemas, code reviews, and deployment workflows.",
                   bullets: [
-                    "Sentinel — AI developer intelligence platform",
-                    "En Passant — real-time multiplayer geolocation chess",
-                    "YourRIGHT/Urimai — civic tech for anonymous grievance escalation",
+                    "Full-stack features with React, Node.js, REST APIs, and MongoDB",
+                    "Participated in code reviews and production deployment workflows",
                   ],
                 },
-              ].map((item, idx) => (
-                <div key={idx} className="exp-item border-t border-border-custom py-8 flex flex-col gap-4">
+              ].map((item) => (
+                <div key={item.company} className="exp-item border-t border-border-custom py-8 flex flex-col gap-4">
                   <div className="exp-header flex justify-between items-start flex-wrap gap-2">
                     <h3 className="exp-role text-lg font-normal text-text-custom tracking-tight">
                       {item.role}
@@ -512,9 +518,22 @@ export default function Home() {
                   <p className="exp-desc text-text-custom2 font-light text-[14px] leading-relaxed">
                     {item.desc}
                   </p>
+                  
+                  {/* Highlighted Stat Cards for metrics scans */}
+                  {"stats" in item && item.stats && (
+                    <div className="flex gap-4 my-2 flex-wrap">
+                      {item.stats.map((st) => (
+                        <div key={st.label} className="border border-mono/20 bg-bg2 px-4 py-2 flex flex-col min-w-[125px]">
+                          <span className="font-mono text-xl text-mono leading-none font-semibold">{st.value}</span>
+                          <span className="font-mono text-[8px] text-text-custom2 uppercase tracking-widest mt-1.5">{st.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <ul className="exp-bullets flex flex-col gap-2 list-none p-0">
                     {item.bullets.map((b, bIdx) => (
-                      <li key={bIdx} className="text-text-custom3 font-light text-[13px] leading-relaxed pl-5 relative before:content-['—'] before:absolute before:left-0 before:text-border-custom2">
+                      <li key={`${item.company}-b-${bIdx}`} className="text-text-custom3 font-light text-[13px] leading-relaxed pl-5 relative before:content-['—'] before:absolute before:left-0 before:text-border-custom2">
                         {b}
                       </li>
                     ))}
@@ -548,11 +567,11 @@ export default function Home() {
 
             <div className="now-cards grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-border-custom border border-border-custom">
               {[
-                { label: "Building", val: "Sentinel", sub: "AI code intelligence platform — making large codebases navigable for developers" },
-                { label: "Thinking About", val: "LLM Orchestration Patterns", sub: "How multi-agent systems fail in production and what actually makes them reliable" },
-                { label: "Exploring", val: "Startup Ecosystems", sub: "Builder communities, founder networks, how to create environments where makers move fast" },
-              ].map((card, idx) => (
-                <div key={idx} className="now-card bg-bg p-8 hover:bg-bg2 transition-colors duration-300 flex flex-col gap-4">
+                { label: "Building", val: "GravLens-MMA", sub: "AI ranking pipeline for gravitational-wave telescope follow-up — deciding where in the sky telescopes should look" },
+                { label: "Thinking About", val: "LLM Reliability Patterns", sub: "How multi-agent systems fail in production and what actually makes agentic workflows robust" },
+                { label: "Writing On", val: "Medium", sub: "Documenting the build process: AI for astrophysics, developer tools, and systems thinking in public" },
+              ].map((card) => (
+                <div key={card.label} className="now-card bg-bg p-8 hover:bg-bg2 transition-colors duration-300 flex flex-col gap-4">
                   <span className="now-label font-mono text-[9px] text-mono uppercase tracking-[0.2em]">
                     {card.label}
                   </span>
@@ -586,10 +605,10 @@ export default function Home() {
                 Tools I <em className="font-serif italic font-normal text-text-custom2">actually</em> use.
               </h2>
               <p className="text-text-custom2 font-light text-[15px] leading-relaxed mb-6">
-                No buzzword bingo. Optimized brand SVGs for all requested technology profiles.
+                No buzzword bingo. Only tools I&apos;ve shipped real things with.
               </p>
               <p className="text-text-custom3 font-mono text-[11px] tracking-wide leading-relaxed">
-                Leaning heavily on TypeScript + Next.js for product layers, Python + FastAPI for backend intelligence, and Supabase + Docker for system services.
+                Core: Python + FastAPI for AI backends. Next.js + React for product layers. LangGraph for agentic workflows. Azure + Docker for cloud infrastructure.
               </p>
             </div>
 
@@ -605,11 +624,59 @@ export default function Home() {
         <hr className="border-border-custom m-0" />
 
         {/* ══════════════════════════════════════════
+            EDUCATION SECTION
+        ══════════════════════════════════════════ */}
+        <section id="education" className="px-8 md:px-12 py-24 md:py-32">
+          <div className="section-label font-mono text-[11px] text-mono tracking-[0.2em] uppercase mb-16 flex items-center gap-4">
+            006 — Education <div className="flex-grow h-[1px] bg-border-custom" />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            <div className="max-w-md">
+              <h2 className="text-3xl md:text-5xl font-light leading-tight tracking-tight mb-4">
+                Where I <em className="font-serif italic font-normal text-text-custom2">learned</em> to build.
+              </h2>
+              <p className="text-text-custom2 font-light text-[15px] leading-relaxed">
+                A background in AI & Data Science gave me the theoretical foundations to build things that actually work in production — not just demo well.
+              </p>
+            </div>
+
+            <div className="flex flex-col w-full">
+              <div className="border-t border-border-custom py-8 flex flex-col gap-4">
+                <div className="flex justify-between items-start flex-wrap gap-2">
+                  <h3 className="text-lg font-normal text-text-custom tracking-tight">
+                    B.Tech — Artificial Intelligence &amp; Data Science
+                  </h3>
+                  <span className="font-mono text-[10px] text-text-custom3 tracking-wider uppercase">2020 — 2024</span>
+                </div>
+                <div className="font-mono text-[12px] text-mono tracking-wider uppercase">
+                  Velammal Engineering College, Chennai
+                </div>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <span className="font-mono text-[11px] text-text-custom2 border border-border-custom px-3 py-1 tracking-wider">
+                    CGPA: 8.88 / 10
+                  </span>
+                  <span className="font-mono text-[11px] text-text-custom3 tracking-wider">
+                    Anna University Affiliated
+                  </span>
+                </div>
+                <p className="text-text-custom2 font-light text-[14px] leading-relaxed">
+                  Specialized in machine learning, neural networks, NLP, and data engineering. Built the foundation for everything from OCR pipelines to agentic AI systems.
+                </p>
+              </div>
+              <div className="border-b border-border-custom w-full" />
+            </div>
+          </div>
+        </section>
+
+        <hr className="border-border-custom m-0" />
+
+        {/* ══════════════════════════════════════════
             CONTACT SECTION
         ══════════════════════════════════════════ */}
         <section id="contact" className="px-8 md:px-12 py-24 md:py-32">
           <div className="section-label font-mono text-[11px] text-mono tracking-[0.2em] uppercase mb-16 flex items-center gap-4">
-            006 — Contact <div className="flex-grow h-[1px] bg-border-custom" />
+            007 — Contact <div className="flex-grow h-[1px] bg-border-custom" />
           </div>
 
           <div className="contact-inner grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
@@ -626,10 +693,11 @@ export default function Home() {
                 {[
                   { name: "GitHub", url: "https://github.com/ManojDevarajulu" },
                   { name: "LinkedIn", url: "https://www.linkedin.com/in/manojd7/" },
+                  { name: "Medium", url: "https://medium.com/@ManojDevarajulu" },
                   { name: "Twitter / X", url: "https://x.com/ManojDevarajulu" },
-                ].map((item, idx) => (
+                ].map((item) => (
                   <a
-                    key={idx}
+                    key={item.name}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"

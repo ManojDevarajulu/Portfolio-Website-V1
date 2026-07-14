@@ -121,7 +121,7 @@ export default function HeroCanvas() {
     function drawGraph() {
       ctx!.save();
       ctx!.globalAlpha = 0.05;
-      ctx!.strokeStyle = "#6b8f71";
+      ctx!.strokeStyle = "#10b981";
       ctx!.lineWidth = 0.8;
       for (const e of edges) {
         ctx!.beginPath();
@@ -136,7 +136,7 @@ export default function HeroCanvas() {
         const al = 0.07 + Math.sin(n.pulse) * 0.04;
         ctx!.save();
         ctx!.globalAlpha = al;
-        ctx!.fillStyle = "#6b8f71";
+        ctx!.fillStyle = "#10b981";
         ctx!.beginPath();
         ctx!.arc(n.x, n.y, 2, 0, Math.PI * 2);
         ctx!.fill();
@@ -154,7 +154,7 @@ export default function HeroCanvas() {
         const py = a.y + (b.y - a.y) * p.t;
         ctx!.save();
         ctx!.globalAlpha = 0.28;
-        ctx!.fillStyle = "#6b8f71";
+        ctx!.fillStyle = "#10b981";
         ctx!.beginPath();
         ctx!.arc(px, py, 1.4, 0, Math.PI * 2);
         ctx!.fill();
