@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const roles = [
-  "AI Engineer",
-  "Full Stack Developer",
-  "Curious Techie",
+  "Full-Stack AI Engineer",
+  "Healthcare AI & RAG Builder",
+  "Multi-Agent Systems Lead",
+  "Systems Architect",
 ];
 
 export default function RoleCycler() {
@@ -22,8 +23,7 @@ export default function RoleCycler() {
     return () => clearInterval(interval);
   }, []);
 
-  // Safe fallback if index is ever out of bounds
-  const currentRole = roles[index] !== undefined ? roles[index] : (roles[0] || "");
+  const currentRole = roles[index] !== undefined ? roles[index] : roles[0] || "";
 
   return (
     <span

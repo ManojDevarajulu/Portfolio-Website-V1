@@ -7,9 +7,9 @@
   --border: #1f1f1f;
   --border2: #2a2a2a;
   --text: #e8e6e0;
-  --text2: #b2b0a3; /* Boosted copy contrast */
-  --text3: #5c5c56; /* Boosted subtext contrast */
-  --accent2: #e8e6e0;
+  --text2: #b8b6aa; /* Boosted copy contrast */
+  --text3: #6b6b64; /* Boosted subtext contrast */
+  --accent2: #c8c4b8;
   --mono: #10b981;  /* Vibrant emerald green */
 }
 
@@ -46,8 +46,6 @@ body {
   color: var(--text);
   overflow-x: hidden;
 }
-
-
 
 /* Grain overlay */
 body::before {
@@ -98,5 +96,3 @@ body::before {
 html {
   scroll-behavior: smooth;
 }
-
-
